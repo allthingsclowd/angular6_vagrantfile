@@ -8,3 +8,5 @@ Set the name of the application in the var.env file
 source var.env
 vagrant up
 ```
+
+Navigate to http://localhost:4200 to see the default demo application.
