@@ -1,0 +1,28 @@
+Vagrant.configure("2") do |config|
+
+    ENV['NG_DEV_IP']||="192.168.2.88"
+    ENV['NG_DEV_NAME']||="ngdev01"
+    ENV['NG_GUEST_PORT']||="4200"
+    ENV['NG_HOST_PORT']||="4200"
+    ENV['NG_APPLICATION_NAME']||="HelloWorld"
+
+    #global config
+    config.vm.synced_folder ".", "/vagrant"
+    config.vm.synced_folder ".", "/usr/local/bootstrap"
+    config.vm.box = "cbednarski/ubuntu-1604"
+
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+        v.cpus = 1
+    end
+
+    config.vm.define "ngdev01" do |devsvr|
+        devsvr.vm.hostname = ENV['NG_DEV_NAME']
+        devsvr.vm.network "private_network", ip: ENV['NG_DEV_IP']
+        devsvr.vm.network "forwarded_port", guest: ENV['NG_GUEST_PORT'], host: ENV['NG_HOST_PORT']
+        devsvr.vm.provision "shell", path: "scripts/init_ang6_env.sh"
+        devsvr.vm.provision "shell", path: "scripts/install_ng_app.sh", privileged: false
+    end
+
+
+end
