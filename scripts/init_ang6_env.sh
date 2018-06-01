@@ -7,6 +7,7 @@ which curl build-essential git nodejs &>/dev/null || {
   apt-get install -y curl build-essential git
   curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
   apt-get install -y nodejs
+  sleep 1
   npm install forever -g
 }
 
